@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+        }
+        .results-box {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .summary-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        .emoji-display {
+            font-size: 72px;
+            text-align: center;
+        }
+        .emoji-label {
+            text-align: center;
+            font-weight: 500;
+            color: #555;
+            margin-top: 10px;
+        }
+        .utterance-container {
+            margin-top: 40px;
+        }
+        .utterance-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #6c757d;
+            position: relative;
+        }
+        .utterance-text {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        .utterance-time {
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        .utterance-emotions, .utterance-sentiments {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .emotion-badge, .sentiment-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .emotion-badge {
+            background-color: #e3f2fd;
+            color: #0d6efd;
+        }
+        .sentiment-badge {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .badge-emoji {
+            margin-right: 5px;
+        }
+        .badge-confidence {
+            opacity: 0.7;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+        .back-button {
+            margin-top: 20px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        .header-emojis {
+            display: flex;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .header-emoji {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-emojis">
+                <div class="header-emoji">😡</div>
+                <div class="header-emoji">😄</div>
+                <div class="header-emoji">😢</div>
+                <div class="header-emoji">😲</div>
+            </div>
+            <h1>Sentiment Analysis Results</h1>
+        </div>
+        
+        <div class="results-box">
+            <div class="summary-container">
+                <div class="summary-item">
+                    <div class="emoji-display">{{ summary.emotion_emoji }}</div>
+                    <div class="emoji-label">Dominant Emotion: {{ summary.dominant_emotion }}</div>
+                </div>
+                <div class="summary-item">
+                    <div class="emoji-display">{{ summary.sentiment_emoji }}</div>
+                    <div class="emoji-label">Dominant Sentiment: {{ summary.dominant_sentiment }}</div>
+                </div>
+            </div>
+            
+            <div class="text-center mb-4">
+                <p>Analyzed {{ summary.utterance_count }} utterance{% if summary.utterance_count != 1 %}s{% endif %} in total</p>
+            </div>
+            
+            <div class="utterance-container">
+                <h3 class="mb-4">Detailed Analysis</h3>
+                
+                {% if results|length == 0 %}
+                <div class="empty-state">
+                    <p>No utterances found in the media</p>
+                </div>
+                {% else %}
+                    {% for utterance in results %}
+                    <div class="utterance-card">
+                        <div class="utterance-text">{{ utterance.text if utterance.text else "No text detected" }}</div>
+                        
+                        {% if utterance.start_time != 0 or utterance.end_time != 0 %}
+                        <div class="utterance-time">Time: {{ "%0.2f"|format(utterance.start_time) }}s - {{ "%0.2f"|format(utterance.end_time) }}s</div>
+                        {% endif %}
+                        
+                        <div class="utterance-emotions">
+                            {% for emotion in utterance.emotions %}
+                            <div class="emotion-badge">
+                                <span class="badge-emoji">{{ emotion_emojis[emotion.label] }}</span>
+                                <span>{{ emotion.label }}</span>
+                                <span class="badge-confidence">({{ "%0.2f"|format(emotion.confidence * 100) }}%)</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="utterance-sentiments">
+                            {% for sentiment in utterance.sentiments %}
+                            <div class="sentiment-badge">
+                                <span class="badge-emoji">{{ sentiment_emojis[sentiment.label] }}</span>
+                                <span>{{ sentiment.label }}</span>
+                                <span class="badge-confidence">({{ "%0.2f"|format(sentiment.confidence * 100) }}%)</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div class="text-center back-button">
+                <a href="/" class="btn btn-primary">Analyze another file</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
