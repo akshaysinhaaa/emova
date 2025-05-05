@@ -39,8 +39,8 @@ The model is **modular** and allows training on individual or fused modalities: 
 
 | Modality | Model Used         | Preprocessing                  |
 |----------|--------------------|--------------------------------|
-| Text     | BERT / BiLSTM      | Tokenization, Padding          |
-| Audio    | CNN + LSTM         | MFCC / Log-Mel Spectrogram     |
+| Text     | BERT               | Tokenization, Padding          |
+| Audio    | CNN                | MFCC / Log-Mel Spectrogram     |
 | Video    | ResNet18 / 3D-CNN  | Face Extraction, Frame Sampling|
 
 ### 🔹 Multimodal Fusion Strategy
@@ -52,9 +52,9 @@ The model is **modular** and allows training on individual or fused modalities: 
 ```
              ┌────────────┐    ┌────────────┐     ┌────────────┐
              │   Text     │    │   Audio    │     │   Video    │
-             └────┬───────┘    └────┬───────┘     └────┬───────┘
+             └────┬───────┘    └── ┬─────── ┘      └────┬───────┘
                   │                │                   │
-         BERT / LSTM      CNN + LSTM (Mel)       3D CNN / ResNet
+                 BERT             CNN            3D CNN / ResNet
                   │                │                   │
                   └────────────┬───┴────┬──────────────┘
                                │ Fusion │
@@ -90,17 +90,13 @@ The model is **modular** and allows training on individual or fused modalities: 
 
 ## 📈 Performance Snapshot
 
-| Configuration         | Accuracy | F1 Score (Macro) |
-|------------------------|----------|------------------|
-| Text only (BERT)       | 66.2%    | 63.4%            |
-| Audio only             | 59.7%    | 56.1%            |
-| Video only             | 61.5%    | 58.9%            |
-| Text + Audio           | 69.3%    | 66.7%            |
-| Text + Audio + Video   | **73.8%**| **71.2%**        |
+| Configuration          | Emo Precision | Emo Acc. | Sen Precision | Sen Acc. |
+|------------------------|---------------|----------|---------------|----------|
+| Fused Model            | 65.00%        | 75.00%   | 85.00%        | 95.00%   |
 
 ---
 
 ## 🧑‍💻 Author
 
-**Akshay Sinha**  
+**Akshay Sinha, Gauri Saksena, Yash Chandel**  
 _Deep Learning | Multimodal AI | Emotion Recognition_
