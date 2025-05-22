@@ -92,7 +92,7 @@ The model is **modular** and allows training on individual or fused modalities: 
 
 | Configuration          | Emo Precision | Emo Acc. | Sen Precision | Sen Acc. |
 |------------------------|---------------|----------|---------------|----------|
-| Fused Model            | 65.00%        | 75.00%   | 85.00%        | 95.00%   |
+| Fused Model            | 53.50%        | 54.90%   | 64.40%        | 64.60%   |
 
 ---
 
