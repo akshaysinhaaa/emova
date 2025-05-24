@@ -1,4 +1,4 @@
-# Multi-Task Learning for Conversational Emotion and Sentiment Recognition
+# ConvEmoSentNet: A Parameter-Efficient Framework for Multimodal Emotion and Sentiment Analysis in Social Media Conversations
 
 A deep learning framework designed for **emotion and sentiment recognition** using **text**, **audio**, and **video** modalities. This project leverages the **MELD (Multimodal EmotionLines Dataset)** to train a robust and flexible model that reflects human communication more accurately than unimodal models.
 
