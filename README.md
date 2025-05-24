@@ -67,7 +67,7 @@ The model is **modular** and allows training on individual or fused modalities: 
 
 ## 🧪 Training Details
 
-- **Optimizer**: AdamW  
+- **Optimizer**: Adam
 - **Scheduler**: ReduceLROnPlateau  
 - **Loss Function**:  
   - CrossEntropyLoss for multiclass emotion classification  
